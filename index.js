@@ -1,6 +1,7 @@
 require('dotenv').config()
 const express = require('express')
-const sequelize = require('./db')
+const mongoose = require('mongoose')
+// const sequelize = require('./db')
 const models = require('./models/models')
 const cors = require('cors')
 const fileUpload = require('express-fileupload')
@@ -26,8 +27,9 @@ app.get('/', (req, res) => {
 
 const start = async () => {
     try {
-        await sequelize.authenticate()
-        await sequelize.sync()
+        // await sequelize.authenticate()
+        // await sequelize.sync()
+        await mongoose.connect('mongodb+srv://admin:s7CZoagOeq1MOicN@angularshop.45cir.mongodb.net/?retryWrites=true&w=majority')
         app.listen(PORT, () => console.log(`Server started on port ${PORT}`))
     }catch (e){
         console.log(e)

@@ -1,59 +1,59 @@
-const sequelize = require('../db')
-const {DataTypes} = require('sequelize')
+// const sequelize = require('../db')
+// const {DataTypes} = require('sequelize')
+const {Schema, model} = require('mongoose')
 
-const User = sequelize.define('user', {
-    id:{type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    email:{type: DataTypes.STRING, unique: true},
-    password:{type: DataTypes.STRING},
-    role:{type: DataTypes.STRING, defaultValue: "USER"},
+const User = new Schema({
+    email:{type: String, unique: true},
+    password:{type: String},
+    role:{type: String, default: "USER"},
 })
 
-const Device = sequelize.define('device', {
-    id:{type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    name:{type:DataTypes.STRING, unique: true, allowNull: false},
-    price:{type: DataTypes.STRING, allowNull: false},
-    img:{type: DataTypes.STRING, allowNull: false}
+const Device = new Schema({
+    name:{type: String, unique: true, allowNull: false},
+    price:{type: String, allowNull: false},
+    img:{type: String, allowNull: false},
+    info: [{type: String, ref: 'DeviceInfo'}]
 })
 
-const Type = sequelize.define('type', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement:true},
-    name: {type: DataTypes.STRING, unique: true, allowNull: false}
+const Type = new Schema({
+    name: {type: String, unique: true, allowNull: false},
+    devices: [{type: String, ref: 'Device'}]
 })
 
-const Brand = sequelize.define('brand', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement:true},
-    name: {type: DataTypes.STRING, unique: true, allowNull: false}
+const Brand = new Schema({
+    name: {type: String, unique: true, allowNull: false},
+    devices: [{type: String, ref: 'Device'}]
 })
 
-const DeviceInfo = sequelize.define('device_info', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement:true},
-    title: {type: DataTypes.STRING, allowNull: false},
-    description: {type: DataTypes.STRING, allowNull: false},
+const DeviceInfo = new Schema({
+    title: {type: String, allowNull: false},
+    description: {type: String, allowNull: false},
 })
 
-const TypeBrand = sequelize.define('type_brand', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement:true},
-})
+// const TypeBrand = new Schema({
+//     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement:true},
+//     info: [{type: String, ref: 'DeviceInfo'}]
+// })
 
 
-Type.hasMany(Device)
-Device.belongsTo(Type)
+// Type.hasMany(Device)
+// Device.belongsTo(Type)
 
-Brand.hasMany(Device)
-Device.belongsTo(Brand)
+// Brand.hasMany(Device)
+// Device.belongsTo(Brand)
 
 
-Device.hasMany(DeviceInfo, {as: 'info'});
-DeviceInfo.belongsTo(Device)
+// Device.hasMany(DeviceInfo, {as: 'info'});
+// DeviceInfo.belongsTo(Device)
 
-Type.belongsToMany(Brand, {through: TypeBrand })
-Brand.belongsToMany(Type, {through: TypeBrand })
+// Type.belongsToMany(Brand, {through: TypeBrand })
+// Brand.belongsToMany(Type, {through: TypeBrand })
 
 module.exports = {
     User,
     Device,
     Type,
     Brand,
-    TypeBrand,
-    DeviceInfo
+    DeviceInfo,
+    // TypeBrand
 }

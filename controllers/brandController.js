@@ -3,12 +3,12 @@ const {Brand} = require("../models/models");
 class  BrandController{
     async create(req, res) {
         const {name} = req.body
-        const brand = await Brand.create({name})
+        const brand = await Brand.save({name})
         return res.json(brand)
     }
 
     async getAll(req, res) {
-        const brands = await Brand.findAll()
+        const brands = await Brand.find({})
         return res.json(brands)
     }
 
